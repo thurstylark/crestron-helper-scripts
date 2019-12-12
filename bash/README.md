@@ -14,12 +14,15 @@ I normally use these scripts from within Windows Subsystem for Linux (WSL), but 
 ### Usage
 
 Summary:
+
 `cnssh <ip address> [command]`
 
 "Interactive" mode:
+
 `cnssh <ip address>`
 
 "Single command" mode:
+
 `cnssh <ip address> <command>`
 
 NOTE: There are not any "modes" formalized in this script. Rather, it effectively wraps the ssh command. This allows the option of running single commands without the need to directly interact with the device's shell (which is, to be honest, very shit).
@@ -28,15 +31,19 @@ NOTE: There are not any "modes" formalized in this script. Rather, it effectivel
 NOTE: Most of these examples assume that a fairly standard set of GNU userspace tools are present.
 
 Run the same command on multiple devices:
+
 `for i in 121 122 123 124 125; do cnssh 192.168.0.$i <command>; done`
 
 Retrieve a list of all commands, using `less` to enable scrolling and searching:
+
 `cnssh <ip address> help all | less`
 
 Alternatively, save the help contents to a text file:
+
 `cnssh <ip address> help all > commands.txt`
 
 Show all commands that *are* listed by `hidhelp all`, but are *not* listed by `help all`:
+
 `target=<ip address>; comm -23 <(cnssh $target hidhelp all | sort) <(cnssh $target help all | sort) | less`
 
 ### Details
@@ -67,9 +74,11 @@ Alternatively, public key authentication can be set up to bypass the need for th
 ### Usage
 
 Summary:
+
 `cnsftp <sftp options>`
 
 Interactive mode:
+
 `cnsftp <ip address>`
 
 Refer to `sftp`'s manpage for more usage information.
@@ -77,9 +86,11 @@ Refer to `sftp`'s manpage for more usage information.
 ### Examples
 
 Upload `project.lpz` to `/Program01/`:
+
 `printf 'put %q' ./project.lpz | cnsftp <ip address>:Program01`
 
 Download `/USER/settings.ini` from target device:
+
 `printf 'get settings.ini' | cnsftp <ip address>:USER`
 
 See `cn-progload.sh` and `cn-fwupd.sh` for more implementation examples.
@@ -101,11 +112,13 @@ In the future, I plan on writing more wrappers for `cnsftp` to make file transfe
 ### Usage
 
 Summary:
+
 `cn-fwupd <ip address> <file>`
 
 ### Examples
 
 Update multiple units (of the same model) at once:
+
 `for i in 10 11 12 13 14; do cn-fwupd 192.168.0.$i /path/to/update.puf; done`
 
 ### Details
@@ -123,20 +136,25 @@ Currently this script has only been tested on a DMPS3-4K-150-C, and a TSW-760. F
 ### Usage
 
 Summary:
+
 `cn-progload <ip address> <file> [slot]`
 
 ### Examples
 
 Load a touchpanel:
+
 `cn-progload <ip address> /path/to/compiled.vtz`
 
 Load a compiled SIMPL Windows project to a controller's slot 1:
+
 `cn-progload <ip address> /path/to/compiled.lpz`
 
 Load a compiled SIMPL Windows project to a controller's slot 2:
+
 `cn-progload <ip address> /path/to/compiled.lpz 2`
 
 Load multiple touchpanels with the same project:
+
 `for i in 10 11 12 13 14; do cn-progload 192.168.0.$i /path/to/compiled.vtz; done`
 
 ### Details
