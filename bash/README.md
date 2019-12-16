@@ -108,6 +108,31 @@ This specific reason was my main motivation for writing `cn-progload.sh` and `cn
 In the future, I plan on writing more wrappers for `cnsftp` to make file transfers easier.
 
 ----
+
+## cn-scp.sh: Easier file upload/download
+### Usage
+
+Summary:
+
+`cn-scp [host:]sourcefile [host:]destfile`
+
+Upload `settings.ini` to `/USER/settings.ini`:
+
+`cn-scp settings.ini <ip address>:/user/settings.ini`
+
+Download `/USER/settings.ini` to `./settings.ini`
+
+`cn-scp <ip address>:/user/settings.ini settings.ini`
+
+### Details
+
+`cn-scp` wraps `cnsftp` to provide a better user interface for copying files to or from a device with a one-line command. As its namesake suggests, the argument syntax is modeled after `scp`.
+
+This script will check for a value for source and destination arguments, parse those arguments to find the path spec separator `:`, and uses that info to run `cnsftp` with the appropriate options. 
+
+Currently, a file must be supplied for both source and destination. In the future, I plan on extending this to accept a directory as an argument. 
+
+----
 ## cn-fwupd.sh: Send firmware to a device, and begin direct update
 ### Usage
 
