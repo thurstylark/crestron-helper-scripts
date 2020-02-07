@@ -28,6 +28,13 @@ Scripts used for modifying the behavior of certain GUI tools that can't be worke
 
 Refer to autohotkey/README.md for environment and usage details.
 
+## SIMPL/
+SIMPL Windows code examples and modules (in pseudocode). 
+
+Since all Crestron source code is legally owned by Crestron, I decided to create a pseudocode standard to easily communicate the necessary structure of a full or partial SIMPL Windows project. This is mainly for documentation and demonstration purposes.
+
+Refer to SIMPL/README.md for details.
+
 ----
 
 # Contributing
