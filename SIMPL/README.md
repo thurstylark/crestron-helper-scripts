@@ -90,7 +90,7 @@ I plan to eventually write a vim syntax highlighter for this standard to make it
 
 
 ### SYMBOLS: Modules or Logic Symbols
-    symbol-name = SPEEDKEY(d.inputname: SigName, d.outputname: SigName, parameter = value)
+    symbol-name = SPEEDKEY(in.inputname: d.SigName, out.outputname: d.SigName, parameter = value)
 
 - `symbol-name`
   - Arbitrary label for the symbol being defined
