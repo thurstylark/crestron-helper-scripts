@@ -1,0 +1,108 @@
+# CTI-P101 Brain Teaser #1
+#
+# This project was presented to the students in the 
+#  February 2020 CTI-P101 class in Rockleigh, used as
+#  a simple demonstration of the process of designing 
+#  a SIMPL Windows project. 
+#
+# Prompt:
+#
+# Pressing button #1 on the Cresnet keypad (C2N-CBD-P) 
+#  will trigger a lighting sequence defined as follows...
+#
+# Light load #1 will transition smoothly to 100% (full on).
+#  Once it reaches its target value, the next light load 
+#  will ramp to 100%. Each remaining load will then ramp 
+#  smoothly to 100% until the final load reaches 100%. 
+#  Once the fonal load reaches 100%, each load will be 
+#  dimmed to 0% (full off) in the same order.
+#
+# Button #1's corresponding LED should turn on while 
+#  the sequence is active.
+
+$R = 2s
+$ON_LVL = 100%
+$OFF_LVL = 0%
+
+CNET[25]: C2N-CBD-P(
+	in.fb1: d.Press1_fb
+	out.Press1: d.Press1
+)
+
+CNET[87]: DIN-4DIMFLV4(
+	in.LevelIn1: a.Light1
+	in.LevelIn2: a.Light2
+	in.LevelIn3: a.Light3
+	in.LevelIn4: a.Light4
+)
+
+>PROTO PRESET(ramp_time = $R)
+>PROTO apreset-on = PRESET(level1 = $ON_LVL)
+>PROTO apreset-off = PRESET(level1 = $OFF_LVL)
+
+apreset-1-on = apreset-on(
+	in.trig: d.Light1_on
+	out.aout1: a.Light1
+)
+
+apreset-2-on = apreset-on(
+	in.trig: d.Light2_on
+	out.aout1: a.Light2
+)
+
+apreset-3-on = apreset-on(
+	in.trig: d.Light3_on
+	out.aout1: a.Light3
+)
+
+apreset-4-on = apreset-on(
+	in.trig: d.Light4_on
+	out.aout1: a.Light4
+)
+
+apreset-1-off = apreset-off(
+	in.trig: d.Light1_off
+	out.aout1: a.Light1
+)
+
+apreset-2-off = apreset-off(
+	in.trig: d.Light2_off
+	out.aout1: a.Light2
+)
+
+apreset-3-off = apreset-off(
+	in.trig: d.Light3_off
+	out.aout1: a.Light3
+)
+
+apreset-4-off = apreset-off(
+	in.trig: d.Light4_off
+	out.aout1: a.Light4
+)
+
+stepper-1 = STEPPER(
+	in.trig: d.Press1
+	out.busy: d.Press1_fb
+
+	# Because this is pseudocode, and meant to be read by humans, I'm 
+	#  purposefully using a prototype in a way that hasn't been defined,
+	#  but would make sense to a human based on how the symbol is
+	#  conceptualized IRL
+
+	>PROTO STEP(
+		delay = $R
+		len = 0s
+	)
+	STEP[1](
+		delay = 0s
+		out.o = d.Light1_on
+	)
+	STEP[2](out.o: d.Light2_on)
+	STEP[3](out.o: d.Light3_on)
+	STEP[4](out.o: d.Light4_on)
+	STEP[5](out.o: d.Light1_off)
+	STEP[6](out.o: d.Light2_off)
+	STEP[7](out.o: d.Light3_off)
+	STEP[8](out.o: d.Light4_off)
+	STEP[9](out.o: //) # This step is to extend the output of d.Press1_fb until the end of the ramp.
+)
